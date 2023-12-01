@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+$buildAutoloadPath = fn($root) => $root . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$root = dirname(__DIR__);
+if (!is_file($buildAutoloadPath($root))) {
+    $root = dirname(__DIR__, 4);
+}
+require $buildAutoloadPath($root);
+
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->run();

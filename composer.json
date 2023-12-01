@@ -1,0 +1,33 @@
+{
+    "name": "mihailvd/prime-multiplication-table",
+    "description": "A PHP CLI that generates prime numbers multiplication table",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mihailvd\\PrimeMultiplicationTable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mihailvd\\PrimeMultiplicationTable\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mihail Dimitrov",
+            "email": "mihailvd@icloud.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "bin": [
+        "bin/run"
+    ],
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    }
+}
