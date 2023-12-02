@@ -2,7 +2,7 @@
 
 namespace Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator;
 
-class PrimeNumberGeneratorService implements PrimeNumberGeneratorInterface
+class PrimeNumberGenerator implements PrimeNumberGeneratorInterface
 {
     /**
      * @return int[]

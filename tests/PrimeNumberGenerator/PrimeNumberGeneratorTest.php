@@ -3,13 +3,13 @@
 namespace Mihailvd\PrimeMultiplicationTable\Test\PrimeNumberGenerator;
 
 use Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator\PrimeNumberGeneratorInterface;
-use Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator\PrimeNumberGeneratorService;
+use Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator\PrimeNumberGenerator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(PrimeNumberGeneratorService::class)]
-final class PrimeNumberGeneratorServiceTest extends TestCase
+#[CoversClass(PrimeNumberGenerator::class)]
+final class PrimeNumberGeneratorTest extends TestCase
 {
     private PrimeNumberGeneratorInterface $primeNumberGenerator;
 
@@ -44,7 +44,7 @@ final class PrimeNumberGeneratorServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->primeNumberGenerator = new PrimeNumberGeneratorService();
+        $this->primeNumberGenerator = new PrimeNumberGenerator();
     }
 
     /**
