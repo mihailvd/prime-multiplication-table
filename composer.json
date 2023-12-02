@@ -10,7 +10,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Mihailvd\\PrimeMultiplicationTable\\Tests\\": "tests/"
+            "Mihailvd\\PrimeMultiplicationTable\\Test\\": "tests/"
         }
     },
     "authors": [
