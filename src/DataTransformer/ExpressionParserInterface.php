@@ -4,5 +4,5 @@ namespace Mihailvd\PrimeMultiplicationTable\DataTransformer;
 
 interface ExpressionParserInterface
 {
-    public function parse(string $expression, int $operand1, int $operand2): float;
+    public function parse(string $expression, int|float $operand1, int|float $operand2): int|float;
 }
