@@ -29,7 +29,7 @@ class PrimeMultiplicationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('prime-multiplication')
+            ->setName('generate')
             ->setDescription('Display an NxN primary numbers multiplication table')
             ->addArgument(
                 'dimensions',

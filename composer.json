@@ -21,7 +21,7 @@
     ],
     "minimum-stability": "stable",
     "bin": [
-        "bin/run"
+        "bin/primes-table"
     ],
     "require": {
         "php": "^8.2",
