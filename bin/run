@@ -8,7 +8,12 @@ if (!is_file($buildAutoloadPath($root))) {
 }
 require $buildAutoloadPath($root);
 
+use Mihailvd\PrimeMultiplicationTable\Command\PrimeMultiplicationCommandFactory;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
+$entryPointCommand = PrimeMultiplicationCommandFactory::create();
+
+$application->add($entryPointCommand);
+$application->setDefaultCommand($entryPointCommand->getName());
 $application->run();
