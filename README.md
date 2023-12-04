@@ -4,7 +4,7 @@
 
 ### Requirements
 
-This project requires PHP 8.2+ and Composer 2+
+This project requires PHP 8.2+ with the PDO extension and Composer 2+
 
 The application is deployed as a composer package. You can install it globally using:
 ```shell
@@ -12,7 +12,7 @@ composer global require mihailvd/prime-multiplication-table
 ```
 You can also run the CLI directly by navigating to the project's root directory and executing:
 ```shell
-./bin/prime-numbers
+./bin/primes-table
 ```
 
 ### Testing
@@ -34,16 +34,21 @@ The math expression formula defaults to "x&ast;y" if none other is supplied.
 
 Generate a prime numbers multiplication table matrix up to 20:
 ```shell
-prime-numbers generate 20
+primes-table generate 20
 ```
 
 Generate a prime numbers up to 50 table, but perform addition instead of multiplication:
 ```shell
-prime-numbers generate 50 -f "x+y"
+primes-table generate 50 -f "x+y"
 ```
 
 The simple math expressions must be written with no spaces, and support simple operations: &ast;, /, +, -.
 The variables "x" and "y" are both optional, can appear multiple times, and can be combined with any numbers, e.g. "x&ast;x+y/0.5"
+
+You can persist the generated matrix to a SQLite database using the option:
+```shell
+primes-table generate 30 -p
+```
 
 ## Implementation details
 

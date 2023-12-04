@@ -3,6 +3,7 @@
 namespace Mihailvd\PrimeMultiplicationTable\Command;
 
 use InvalidArgumentException;
+use Mihailvd\PrimeMultiplicationTable\DataPersister\DataPersisterInterface;
 use Mihailvd\PrimeMultiplicationTable\DataTransformer\MatrixCreatorInterface;
 use Mihailvd\PrimeMultiplicationTable\DataTransformer\OperationFactory;
 use Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator\PrimeNumberGeneratorInterface;
@@ -21,6 +22,7 @@ class PrimeMultiplicationCommand extends Command
     public function __construct(
         private readonly PrimeNumberGeneratorInterface $primeNumberGenerator,
         private readonly MatrixCreatorInterface $matrixCreator,
+        private readonly DataPersisterInterface $dataPersister,
         string $name = null
     ) {
         parent::__construct($name);
@@ -43,6 +45,12 @@ class PrimeMultiplicationCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Custom calculation formula. Provide x and y, no spaces, supported operations are +,-,*,/. E.g. x*y',
                 'x*y'
+            )
+            ->addOption(
+                'persist',
+                'p',
+                InputOption::VALUE_NONE,
+                'Persist the generated matrix',
             );
     }
 
@@ -59,6 +67,7 @@ class PrimeMultiplicationCommand extends Command
 
         $dimensions = (int)$input->getArgument('dimensions');
         $mathExpression = (string)$input->getOption('formula');
+        $persistMatrix = $input->getOption('persist');
 
         $primeNumbers = $this->primeNumberGenerator->generate($dimensions);
 
@@ -75,6 +84,14 @@ class PrimeMultiplicationCommand extends Command
         }
 
         $this->renderTable($output, $primeNumbers, $primeNumbers, $matrix);
+
+        if ($persistMatrix) {
+            $this->dataPersister->persistMatrix(
+                xAxis: $primeNumbers,
+                yAxis: $primeNumbers,
+                matrix: $matrix
+            );
+        }
 
         return Command::SUCCESS;
     }

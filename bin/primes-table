@@ -12,7 +12,7 @@ use Mihailvd\PrimeMultiplicationTable\Command\PrimeMultiplicationCommandFactory;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
-$entryPointCommand = PrimeMultiplicationCommandFactory::create();
+$entryPointCommand = PrimeMultiplicationCommandFactory::create('data.sqlite3');
 
 $application->add($entryPointCommand);
 $application->setDefaultCommand($entryPointCommand->getName());
