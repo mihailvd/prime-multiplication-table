@@ -4,7 +4,7 @@
 
 ### Requirements
 
-This project requires PHP 8.2+ and Composer 2+
+This project requires PHP 8.2+ with the PDO extension and Composer 2+
 
 The application is deployed as a composer package. You can install it globally using:
 ```shell
@@ -44,6 +44,11 @@ prime-numbers generate 50 -f "x+y"
 
 The simple math expressions must be written with no spaces, and support simple operations: &ast;, /, +, -.
 The variables "x" and "y" are both optional, can appear multiple times, and can be combined with any numbers, e.g. "x&ast;x+y/0.5"
+
+You can persist the generated matrix to a SQLite database using the option:
+```shell
+prime-numbers generate 30 -p
+```
 
 ## Implementation details
 
