@@ -2,6 +2,7 @@
 
 namespace Mihailvd\PrimeMultiplicationTable\DataPersister;
 
+use Mihailvd\PrimeMultiplicationTable\Dto\MatrixDto;
 use PDO;
 
 class SQLiteDataPersister implements DataPersisterInterface
@@ -12,15 +13,13 @@ class SQLiteDataPersister implements DataPersisterInterface
     }
 
     /**
-     * @param int|float[] $xAxis
-     * @param int|float[] $yAxis
-     * @param int|float[][] $matrix
+     * @param MatrixDto $matrixDto
      */
-    public function persistMatrix(array $xAxis, array $yAxis, array $matrix): void
+    public function persistMatrix(MatrixDto $matrixDto): void
     {
-        $tableName = 'matrix' . count($xAxis) . 'x' . count($yAxis);
+        $tableName = 'matrix' . count($matrixDto->getXAxis()) . 'x' . count($matrixDto->getYAxis());
         $this->prepareTable($tableName);
-        $this->insertRecords($tableName, $xAxis, $yAxis, $matrix);
+        $this->insertRecords($tableName, $matrixDto);
     }
 
     private function prepareTable(string $tableName): void
@@ -45,18 +44,18 @@ class SQLiteDataPersister implements DataPersisterInterface
      * @param int|float[] $yAxis
      * @param int|float[][] $matrix
      */
-    private function insertRecords(string $tableName, array $xAxis, array $yAxis, array $matrix): void
+    private function insertRecords(string $tableName, MatrixDto $matrixDto): void
     {
         $sql = 'INSERT INTO ' . $tableName . ' (prime1, prime2, function_return)
             VALUES (:prime1, :prime2, :functionReturn)';
         $statement = $this->pdo->prepare($sql);
 
-        foreach ($xAxis as $xIndex => $xPrimeNumber) {
-            foreach ($yAxis as $yIndex => $yPrimeNumber) {
+        foreach ($matrixDto->getXAxis() as $xIndex => $xPrimeNumber) {
+            foreach ($matrixDto->getYAxis() as $yIndex => $yPrimeNumber) {
                 $statement->execute([
                     ':prime1' => $xPrimeNumber,
                     ':prime2' => $yPrimeNumber,
-                    ':functionReturn' => $matrix[$xIndex][$yIndex]
+                    ':functionReturn' => $matrixDto->getMatrix()[$xIndex][$yIndex]
                 ]);
             }
         }

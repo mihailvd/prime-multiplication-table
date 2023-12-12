@@ -2,7 +2,9 @@
 
 namespace Mihailvd\PrimeMultiplicationTable\DataPersister;
 
+use Mihailvd\PrimeMultiplicationTable\Dto\MatrixDto;
+
 interface DataPersisterInterface
 {
-    public function persistMatrix(array $xAxis, array $yAxis, array $matrix): void;
+    public function persistMatrix(MatrixDto $matrixDto): void;
 }

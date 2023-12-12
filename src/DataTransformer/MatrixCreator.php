@@ -3,6 +3,7 @@
 namespace Mihailvd\PrimeMultiplicationTable\DataTransformer;
 
 use InvalidArgumentException;
+use Mihailvd\PrimeMultiplicationTable\Dto\MatrixDto;
 
 class MatrixCreator implements MatrixCreatorInterface
 {
@@ -12,7 +13,7 @@ class MatrixCreator implements MatrixCreatorInterface
      * @return int|float[][]
      * @throws InvalidArgumentException
      */
-    public function generate(array $xAxis, array $yAxis, OperationInterface $operation): array
+    public function generate(array $xAxis, array $yAxis, OperationInterface $operation): MatrixDto
     {
         $matrix = [];
 
@@ -24,6 +25,6 @@ class MatrixCreator implements MatrixCreatorInterface
             $matrix[] = $row;
         }
 
-        return $matrix;
+        return new MatrixDto($xAxis, $yAxis, $matrix);
     }
 }

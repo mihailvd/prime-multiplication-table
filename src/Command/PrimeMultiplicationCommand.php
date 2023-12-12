@@ -6,11 +6,9 @@ use InvalidArgumentException;
 use Mihailvd\PrimeMultiplicationTable\DataPersister\DataPersisterInterface;
 use Mihailvd\PrimeMultiplicationTable\DataTransformer\MatrixCreatorInterface;
 use Mihailvd\PrimeMultiplicationTable\DataTransformer\OperationFactory;
+use Mihailvd\PrimeMultiplicationTable\Output\MatrixOutputFactory;
 use Mihailvd\PrimeMultiplicationTable\PrimeNumberGenerator\PrimeNumberGeneratorInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableCell;
-use Symfony\Component\Console\Helper\TableCellStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,6 +31,12 @@ class PrimeMultiplicationCommand extends Command
         $this
             ->setName('generate')
             ->setDescription('Display an NxN primary numbers multiplication table')
+            ->addOption(
+                'output',
+                'o',
+                InputOption::VALUE_REQUIRED,
+                'Export using external output interface (stdout, html)'
+            )
             ->addArgument(
                 'dimensions',
                 InputArgument::OPTIONAL,
@@ -68,11 +72,12 @@ class PrimeMultiplicationCommand extends Command
         $dimensions = (int)$input->getArgument('dimensions');
         $mathExpression = (string)$input->getOption('formula');
         $persistMatrix = $input->getOption('persist');
+        $outputMode = $input->getOption('output');
 
         $primeNumbers = $this->primeNumberGenerator->generate($dimensions);
 
         try {
-            $matrix = $this->matrixCreator->generate(
+            $matrixDto = $this->matrixCreator->generate(
                 xAxis: $primeNumbers,
                 yAxis: $primeNumbers,
                 operation: OperationFactory::create($mathExpression)
@@ -83,40 +88,13 @@ class PrimeMultiplicationCommand extends Command
             return Command::FAILURE;
         }
 
-        $this->renderTable($output, $primeNumbers, $primeNumbers, $matrix);
+        $matrixOutput = MatrixOutputFactory::create($outputMode, $output);
+        $matrixOutput->output($matrixDto);
 
         if ($persistMatrix) {
-            $this->dataPersister->persistMatrix(
-                xAxis: $primeNumbers,
-                yAxis: $primeNumbers,
-                matrix: $matrix
-            );
+            $this->dataPersister->persistMatrix($matrixDto);
         }
 
         return Command::SUCCESS;
-    }
-
-    /**
-     * @param int|float[] $xAxis
-     * @param int|float[] $yAxis
-     * @param int|float[][] $matrix
-     */
-    private function renderTable(OutputInterface $output, array $xAxis, array $yAxis, array $matrix): void
-    {
-        $table = new Table($output);
-        $table->setHeaders([' ', ...$xAxis]);
-
-        foreach ($matrix as $index => $matrixRow) {
-            $table->addRow([
-                new TableCell($yAxis[$index], [
-                    'style' => new TableCellStyle([
-                        'cellFormat' => '<info>%s</info>',
-                    ])
-                ]),
-                ...$matrixRow
-            ]);
-        }
-
-        $table->render();
     }
 }
